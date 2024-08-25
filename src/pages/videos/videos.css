@@ -1,0 +1,18 @@
+.video-container__div {
+  background-color: blue;
+  height: 500px;
+  padding: 5px;
+  flex-direction: row;
+  flex-wrap: no-wrap;
+  justify-content: space-around;
+}
+.video-item__div {
+  background-color: tomato;
+  width: 200px;
+  height: 100px;
+  padding: 5px;
+  margin: 10px;
+}
+.video-item__div: last-child {
+  align-self: center;
+}
