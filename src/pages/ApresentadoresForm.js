@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./apresentadoresForm.css";
+import { cepClient } from "../clients/cepClient.js";
 
 export default function ApresentadoresForm() {
   const [rua, setRua] = useState("");
@@ -36,16 +37,17 @@ export default function ApresentadoresForm() {
     handleOnBlur();
     const cep = formData.cep.replace("-", "");
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
+      const data = await cepClient(cep);
+      console.log("data", data);
       if (!data.erro) {
-        setRua(response.data.logradouro);
-        setCidade(response.data.localidade);
+        setRua(data.street);
+        setCidade(data.neighborhood);
       } else {
         alert("CEP não encontrado!");
       }
     } catch (error) {
-      alert("Erro ao buscar CEP");
+      alert("Erro ao buscar CEP" + error.message);
+      console.error(error);
     }
   };
 

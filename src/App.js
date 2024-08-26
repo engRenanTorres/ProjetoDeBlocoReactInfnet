@@ -5,11 +5,11 @@ import {
   Routes,
   Outlet,
 } from "react-router-dom";
-import LayoutPadrao from "./containers/LayoutPadrao";
-import Home from "./pages/Home";
-import Videos from "./pages/videos/Videos";
-import ApresentadoresForm from "./pages/ApresentadoresForm";
-import Login from "./pages/Login";
+import LayoutPadrao from "./containers/LayoutPadrao.js";
+import Home from "./pages/Home.js";
+import Videos from "./pages/videos/Videos.js";
+import ApresentadoresForm from "./pages/ApresentadoresForm.js";
+import Login from "./pages/Login.js";
 
 export default function AppRouter() {
   return (

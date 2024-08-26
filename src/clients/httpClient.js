@@ -23,21 +23,23 @@ export async function HttpClient(
   });
 }
 
-export async function HttpClientGet(url, fetchOptions = {}, authorization) {
-  const defaultHeaders = fetchOptions.headers || {};
-  return fetch(url, {
-    ...fetchOptions,
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      "Content-Type": "application/json",
-      ...defaultHeaders,
-      Authorization: authorization ? `Bearer ${authorization}` : "",
-    },
-  }).then(async (response) => {
-    return {
-      ok: response.ok,
-      body: await response.json(),
-    };
-  });
+export const HttpBasicClient = { 
+  get: async (url, fetchOptions = {}, authorization) => {
+    const defaultHeaders = fetchOptions.headers || {};
+    return fetch(url, {
+      ...fetchOptions,
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        ...defaultHeaders,
+        Authorization: authorization ? `Bearer ${authorization}` : "",
+      },
+    }).then(async (response) => {
+      return {
+        ok: response.ok,
+        body: await response.json(),
+      };
+    });
+  }
 }
