@@ -7,19 +7,18 @@ export const cepClient = async (cep) => {
 
   try {
     const response = await HttpBasicClient.get(
-      `https://viacep.com.br/ws/${cep}/json/`,
+      `https://viacep.com.br/ws/${cep}/json/`
     );
 
-    console.log("aqui", response);
-    if (response.body.erro) {
+    if (!response.ok) {
       return null; // CEP não encontrado
     }
 
     return {
-      street: response.body.logradouro,
-      neighborhood: response.body.bairro,
-      city: response.body.localidade,
-      state: response.body.uf,
+      rua: response.body.logradouro,
+      bairro: response.body.bairro,
+      cidade: response.body.localidade,
+      estado: response.body.uf,
     };
   } catch (error) {
     console.error("Erro ao buscar CEP:", error);

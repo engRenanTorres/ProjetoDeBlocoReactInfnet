@@ -37,11 +37,11 @@ export default function ApresentadoresForm() {
     handleOnBlur();
     const cep = formData.cep.replace("-", "");
     try {
-      const data = await cepClient(cep);
-      console.log("data", data);
-      if (!data.erro) {
-        setRua(data.street);
-        setCidade(data.neighborhood);
+      const dados = await cepClient(cep);
+      console.log("data", dados);
+      if (dados) {
+        setRua(dados.rua);
+        setCidade(dados.cidade);
       } else {
         alert("CEP não encontrado!");
       }
@@ -96,8 +96,8 @@ export default function ApresentadoresForm() {
               onBlur={handleOnBlur}
               value={formData.nome}
             />
+            {erros.nome && <span className="error">{erros.nome}</span>}
           </div>
-          {erros.nome && <span className="error">{erros.nome}</span>}
           <div className="input-group">
             <label htmlFor="email">E-mail</label>
             <input
@@ -107,8 +107,8 @@ export default function ApresentadoresForm() {
               onChange={handleChance}
               value={formData.email}
             />
+            {erros.email && <span className="error">{erros.email}</span>}
           </div>
-          {erros.email && <span className="error">{erros.email}</span>}
           <div className="input-group">
             <label htmlFor="cep">CEP</label>
             <input
@@ -145,6 +145,7 @@ export default function ApresentadoresForm() {
           <div className="input-group">
             <label htmlFor="cidade">Cidade</label>
             <input
+              disabled
               type="text"
               id="cidade"
               name="cidade"
