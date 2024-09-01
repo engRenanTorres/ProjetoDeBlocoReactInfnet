@@ -23,7 +23,7 @@ export async function HttpClient(
   });
 }
 
-export const HttpBasicClient = { 
+export const HttpBasicClient = {
   get: async (url, fetchOptions = {}, authorization) => {
     const defaultHeaders = fetchOptions.headers || {};
     return fetch(url, {
@@ -41,5 +41,5 @@ export const HttpBasicClient = {
         body: await response.json(),
       };
     });
-  }
-}
+  },
+};
