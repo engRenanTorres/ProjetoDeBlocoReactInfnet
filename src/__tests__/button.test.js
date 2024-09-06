@@ -1,10 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import Button from "./Button";
+import { render, screen, fireEvent } from "@testing-library/react";
+import Button from "../components/Button";
 
-
-
-test('renders Button with label and handles click', () => {
-  const handleClick = jest.fn();  // Mock da função onClick
+test("renders Button with label and handles click", () => {
+  const handleClick = jest.fn(); // Mock da função onClick
   render(<Button label="Click Me" onClick={handleClick} />);
 
   // Verifica se o label está presente
