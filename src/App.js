@@ -12,7 +12,7 @@ import ApresentadoresForm from "./pages/ApresentadoresForm.js";
 import Login from "./pages/Login.js";
 import NotFound from "./pages/NotFound.js";
 import UserList from "./pages/usuarios/User.js";
-import LojaCRUD from "./pages/loja/Loja.jsx";
+import LojaCRUD from "./pages/loja/LojaCrud.jsx";
 
 export default function AppRouter() {
   return (
