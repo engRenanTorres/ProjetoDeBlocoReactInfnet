@@ -1,0 +1,30 @@
+.user-list__table-cell {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.user-list__loading,
+.user-list__error {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+}
+.user-list__error {
+  color: #ff0000;
+}
+.user-list__table-cell {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.user-list__loading,
+.user-list__error {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+}
+.user-list__error {
+  color: #ff0000;
+}

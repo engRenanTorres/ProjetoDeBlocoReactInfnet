@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.js";
 function LayoutPadrao() {
   return (
     <>
-      <Navbar />
+      <Navbar nomeUsuario="" />
       <Outlet />
     </>
   );
