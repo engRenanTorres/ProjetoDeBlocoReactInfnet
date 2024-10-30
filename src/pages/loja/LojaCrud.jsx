@@ -91,9 +91,7 @@ const LojaCRUD = () => {
 
   const deleteItem = async (id) => {
     try {
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
-        method: "DELETE",
-      });
+      const response = await APIClient.delete(`/products`, id);
       if (!response.ok) {
         throw new Error("Falha ao criar Produtos");
       }

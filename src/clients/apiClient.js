@@ -57,4 +57,22 @@ export const APIClient = {
       };
     });
   },
+  delete: async (endpoint, id, fetchOptions = {}, authorization) => {
+    const defaultHeaders = fetchOptions.headers || {};
+    return fetch(`${baseUrl}${endpoint}/${id}`, {
+      ...fetchOptions,
+      method: "DELETE",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        ...defaultHeaders,
+        Authorization: authorization ? `Bearer ${authorization}` : "",
+      },
+    }).then(async (response) => {
+      return {
+        ok: response.ok,
+        body: await response.json(),
+      };
+    });
+  },
 };

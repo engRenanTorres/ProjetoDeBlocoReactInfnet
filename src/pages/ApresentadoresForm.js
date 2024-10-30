@@ -8,6 +8,7 @@ import InputField from "../components/InputField.js";
 import * as zod from "zod";
 import { Suspense } from "react";
 import { regexCep } from "../utils/regex.js";
+import { useLocation } from "react-router-dom";
 
 // Esquema de validação com zod
 const schema = zod.object({
@@ -20,6 +21,10 @@ const schema = zod.object({
 });
 
 export default function ApresentadoresForm() {
+  const location = useLocation();
+  const dadosRecebidos = location.state;
+  console.log(location);
+
   const {
     register,
     handleSubmit,
@@ -31,8 +36,8 @@ export default function ApresentadoresForm() {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  const [rua, setRua] = useState("");
-  const [cidade, setCidade] = useState("");
+  const [rua, setRua] = useState(dadosRecebidos?.rua ?? "");
+  const [cidade, setCidade] = useState(dadosRecebidos?.cidade ?? "");
 
   const handleBlurCep = async (cepRecebido) => {
     const cep = cepRecebido.replace("-", "");

@@ -13,26 +13,31 @@ import Login from "./pages/Login.js";
 import NotFound from "./pages/NotFound.js";
 import UserList from "./pages/usuarios/User.js";
 import LojaCRUD from "./pages/loja/LojaCrud.jsx";
+import { lazy, Suspense } from "react";
+
+const LojaCRUDLazy = lazy(() => import("./pages/loja/LojaCrud.jsx"));
 
 export default function AppRouter() {
   return (
     <div className="App">
       <Router>
-        <Routes>
-          <Route path="/" element={<LayoutPadrao />}>
-            <Route index element={<Home />} />
-            <Route path="videos" element={<Videos />} />
-            <Route path="apresentadores" element={<Outlet />}>
-              <Route index element={<UserList />} />
-              <Route path="inserir" element={<ApresentadoresForm />} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<LayoutPadrao />}>
+              <Route index element={<Home />} />
+              <Route path="videos" element={<Videos />} />
+              <Route path="apresentadores" element={<Outlet />}>
+                <Route index element={<UserList />} />
+                <Route path="inserir" element={<ApresentadoresForm />} />
+              </Route>
+              <Route path="loja" element={<Outlet />}>
+                <Route index element={<LojaCRUDLazy />} />
+              </Route>
+              <Route path="login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="loja" element={<Outlet />}>
-              <Route index element={<LojaCRUD />} />
-            </Route>
-            <Route path="login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+          </Routes>
+        </Suspense>
       </Router>
     </div>
   );
