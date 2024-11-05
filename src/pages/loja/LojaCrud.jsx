@@ -14,92 +14,40 @@ import {
   Box,
 } from "@mui/material";
 import { APIClient } from "../../clients/apiClient";
+import { useSearchParams } from "react-router-dom";
+import { useProducts } from "../../hooks/useProducts";
 
 const LojaCRUD = () => {
-  const [items, setItems] = useState([]);
-  const [newItem, setNewItem] = useState({ title: "", price: "" });
+  const { products, loading, error, addProduct, updateProduct, deleteProduct } =
+    useProducts();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const titulo = searchParams.get("titulo");
+  const price = searchParams.get("price");
+
+  const [newItem, setNewItem] = useState({
+    title: titulo ?? "",
+    price: price ?? "",
+  });
   const [editingItem, setEditingItem] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  const fetchItems = async () => {
-    setLoading(true);
-    try {
-      const response = await APIClient.get("/products");
-      if (!response.ok) {
-        throw new Error("Falha ao buscar Produtos");
-      }
-      setItems(response.body);
-    } catch (error) {
-      console.error("Erro ao buscar itens:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewItem((prev) => ({ ...prev, [name]: value }));
   };
 
-  const addItem = async () => {
-    setLoading(true);
-    try {
-      const response = await APIClient.post("/products", newItem);
-      if (!response.ok) {
-        throw new Error("Falha ao criar Produtos");
-      }
-      setItems((prev) => [...prev, response.body]);
-      setNewItem({ title: "", price: "" });
-    } catch (error) {
-      console.error("Erro ao adicionar item:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateItem = async () => {
-    setLoading(true);
-    try {
-      const response = await APIClient.put(
-        "/products",
-        editingItem.id,
-        newItem
-      );
-
-      const updatedItem = await response.body;
-      setItems((prev) =>
-        prev.map((item) => (item.id === editingItem.id ? updatedItem : item))
-      );
+  const handleAddOrUpdate = async () => {
+    if (editingItem) {
+      await updateProduct(editingItem.id, newItem);
       setEditingItem(null);
-      setNewItem({ title: "", price: "" });
-    } catch (error) {
-      console.error("Erro ao atualizar item:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      await addProduct(newItem);
     }
+    setNewItem({ title: "", price: "" });
   };
+
   const startEditing = (item) => {
     setEditingItem(item);
     setNewItem({ title: item.title, price: item.price });
-  };
-
-  const deleteItem = async (id) => {
-    try {
-      const response = await APIClient.delete(`/products`, id);
-      if (!response.ok) {
-        throw new Error("Falha ao criar Produtos");
-      }
-      setItems((prev) => prev.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Erro ao deletar item:", error);
-      setError(error.message);
-    }
   };
 
   if (loading) return <div className="user-list__loading">Carregando...</div>;
@@ -126,10 +74,7 @@ const LojaCRUD = () => {
           onChange={handleInputChange}
           sx={{ mr: 2 }}
         />
-        <Button
-          variant="contained"
-          onClick={editingItem ? updateItem : addItem}
-        >
+        <Button variant="contained" onClick={handleAddOrUpdate}>
           {editingItem ? "Atualizar" : "Adicionar"}
         </Button>
       </Box>
@@ -144,7 +89,7 @@ const LojaCRUD = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.map((item) => (
+            {products.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.title}</TableCell>
@@ -160,7 +105,7 @@ const LojaCRUD = () => {
                   <Button
                     variant="contained"
                     color="error"
-                    onClick={() => deleteItem(item.id)}
+                    onClick={() => deleteProduct(item.id)}
                   >
                     Deletar
                   </Button>

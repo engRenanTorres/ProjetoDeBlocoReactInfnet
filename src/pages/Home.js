@@ -5,6 +5,7 @@ import { useState } from "react";
 function Home() {
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
+  const titulo = "caderno";
 
   const handleClick = () => {
     setCount(count + 1);
@@ -25,15 +26,18 @@ function Home() {
       {/* <Button label={count} onClick={handleClick}/> */}
       <Button label="Voltar" onClick={handleBack} />
       <Button label="Avançar" onClick={() => navigate(1)} />
-      <button
+      <button onClick={() => navigate(`/loja?titulo=${titulo}&price=${123}`)}>
+        Passar Dados Para Loja
+      </button>
+      {/*<button
         onClick={() =>
           navigate(`/apresentadores/inserir/789`, {
             state: { rua: "Renan", cidade: "Niteroi" },
           })
         }
       >
-        Passar Dados Para outra Página
-      </button>
+        Passar Dados Para Loja
+      </button>*/}
     </div>
   );
 }
