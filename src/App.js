@@ -14,31 +14,40 @@ import NotFound from "./pages/NotFound.js";
 import UserList from "./pages/usuarios/User.js";
 import LojaCRUD from "./pages/loja/LojaCrud.jsx";
 import { lazy, Suspense } from "react";
+import { ThemeProvider } from "./contexts/ThemeContext.js";
+import { AuthProvider } from "./contexts/AuthContext.js";
+import PrivateRoutes from "./utils/PrivateRoutes2.js";
 
 const LojaCRUDLazy = lazy(() => import("./pages/loja/LojaCrud.jsx"));
 
 export default function AppRouter() {
   return (
     <div className="App">
-      <Router>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<LayoutPadrao />}>
-              <Route index element={<Home />} />
-              <Route path="videos" element={<Videos />} />
-              <Route path="apresentadores" element={<Outlet />}>
-                <Route index element={<UserList />} />
-                <Route path="inserir" element={<ApresentadoresForm />} />
-              </Route>
-              <Route path="loja" element={<Outlet />}>
-                <Route index element={<LojaCRUDLazy />} />
-              </Route>
-              <Route path="login" element={<Login />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <AuthProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route path="/" element={<LayoutPadrao />}>
+                  <Route index element={<Home />} />
+                  <Route path="videos" element={<Videos />} />
+                  <Route path="apresentadores" element={<Outlet />}>
+                    <Route index element={<UserList />} />
+                    <Route path="inserir" element={<ApresentadoresForm />} />
+                  </Route>
+                  <Route element={<PrivateRoutes />}>
+                    <Route path="loja" element={<Outlet />}>
+                      <Route index element={<LojaCRUDLazy />} />
+                    </Route>
+                  </Route>
+                  <Route path="login" element={<Login />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </AuthProvider>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 }

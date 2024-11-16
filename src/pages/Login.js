@@ -1,41 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AuthContext from "../contexts/AuthContext.js";
 
 export default function Login({ setIsLoggedIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const { signin } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
     try {
-      const response = await fetch("https://fakestoreapi.com/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login falhou");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      localStorage.setItem("token", data.token);
-
-      setIsLoggedIn(true);
-    } catch (err) {
-      setError("Usuário ou senha inválidos");
-    } finally {
-      setLoading(false);
+      console.log(username, password);
+      signin(username, password);
+    } catch (error) {
+      alert(error);
+      console.log(error);
     }
   };
 

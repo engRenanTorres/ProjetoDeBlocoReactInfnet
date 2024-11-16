@@ -1,10 +1,23 @@
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext.js";
 
-function Navbar({ nomeUsuario }) {
+function Navbar() {
   const navigate = useNavigate();
+
+  const { currentUser, signout } = useContext(AuthContext);
 
   const handleLoginClick = () => {
     navigate("/login");
+  };
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      signout();
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
   };
 
   return (
@@ -22,12 +35,15 @@ function Navbar({ nomeUsuario }) {
         {/* Adicione outros links aqui */}
       </ul>
       <div className="navbar-item">
-        {nomeUsuario ? (
-          <span>Olá, {nomeUsuario}</span>
+        {currentUser ? (
+          <>
+            <span>Olá, {currentUser}</span>
+          </>
         ) : (
           <button onClick={handleLoginClick}>Login</button>
         )}
       </div>
+      <button onClick={handleLogout}>Logout</button>
     </nav>
   );
 }
